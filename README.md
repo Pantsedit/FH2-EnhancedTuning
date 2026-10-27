@@ -11,8 +11,6 @@ and writes a line to the log.
 
 ![The ENHANCED TUNING tab, first in the Tuning screen](docs/screenshots/tuning-tab.webp)
 
-![The pause menu's ENHANCED TUNING tile](docs/screenshots/pause-tile.png)
-
 ---
 
 ## Features
