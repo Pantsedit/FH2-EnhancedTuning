@@ -1,0 +1,32 @@
+# Build by-products
+*.pdb
+*.lib
+*.obj
+*.o
+*.exe
+zig-cache/
+.zig-cache/
+zig-out/
+
+# Python
+__pycache__/
+*.pyc
+
+# Per-user files the mod creates at run time (never commit your own tunes)
+release/Enhanced Tuning/tunes.ini
+
+# Development dumps and game data: never commit anything from the game
+dumps/
+*.bin
+*.slt
+*.xaml
+*.xml
+*.zip
+
+# Editors / OS
+.vs/
+.vscode/
+*.swp
+Thumbs.db
+Desktop.ini
+.DS_Store

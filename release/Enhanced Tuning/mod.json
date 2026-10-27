@@ -1,0 +1,11 @@
+{
+  "format_version": 1,
+  "id": "enhanced-tuning",
+  "name": "Enhanced Tuning",
+  "version": "1.0.0",
+  "description": "Adds an ENHANCED TUNING tab to the Tuning screen: horsepower, torque, boost, rev limit, top speed, weight, steering, brakes, grip, drag, downforce and an MW Handling preset, saved per car. Its empty database.json makes Extra Options hand the plugin the in-memory game database it edits.",
+  "database": "database.json",
+  "media": null,
+  "dependencies": [],
+  "strings": "strings.json"
+}
