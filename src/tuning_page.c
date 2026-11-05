@@ -7,7 +7,8 @@
 // at fixed anchors in whatever text came back:
 //   - a storyboard that shows our panel,
 //   - the VisualState_EnhancedTuning state that plays it,
-//   - the StackPanel_0_EnhancedTuning panel itself, one row per slider in tunes.c.
+//   - the StackPanel_0_EnhancedTuning panel itself, one row per slider in tunes.c,
+//   - and its text in the Description box (the selected row's help).
 // Anything unexpected (Extra Options' hook missing, an anchor not found exactly
 // once, the panel already present) leaves the file exactly as it was loaded.
 
@@ -66,10 +67,21 @@ static const Insert inserts[] = {
      "                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty=\"(UIElement.Visibility)\" Storyboard.TargetName=\"StackPanel_0_EnhancedTuning\">\r\n"
      "                    <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{x:Static Visibility.Visible}\"/>\r\n"
      "                </ObjectAnimationUsingKeyFrames>\r\n"
+     "                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty=\"(UIElement.Visibility)\" Storyboard.TargetName=\"TextBlock_0_EnhancedTuning\">\r\n"
+     "                    <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{x:Static Visibility.Visible}\"/>\r\n"
+     "                </ObjectAnimationUsingKeyFrames>\r\n"
      "            </Storyboard>\r\n\r\n            "},
     {"<VisualState x:Name=\"VisualState_Differential\" Storyboard=\"{StaticResource A_Storyboard_VisualState_Differential}\"/>", 1,
      "\r\n                <VisualState x:Name=\"VisualState_EnhancedTuning\" Storyboard=\"{StaticResource LiveTune_Storyboard_VisualState_EnhancedTuning}\"/>"},
     {"<local:CommonListBox x:Name=\"StackPanel_9_Differential\"", 0, panel},  // built from tune_sliders
+    // The Description box: the game has one text per tab, each showing its list's
+    // selected row's Tag (the help text). Ours, shown by our tab's storyboard.
+    {"<local:AutoScrollPanel DataContext=\"{Binding SelectedItem, ElementName=StackPanel_9_Differential}\"", 0,
+     "<local:AutoScrollPanel DataContext=\"{Binding SelectedItem, ElementName=StackPanel_0_EnhancedTuning}\" Style=\"{StaticResource A_Style_AutoScrollPanel_Masked_Tuning}\">\r\n"
+     "                                            <StackPanel>\r\n"
+     "                                                <local:FZTextBlock x:Name=\"TextBlock_0_EnhancedTuning\" Text=\"{Binding Tag}\" Style=\"{StaticResource A_Style_FZTextBlock_Tuning_DescriptionBlockBody}\" />\r\n"
+     "                                            </StackPanel>\r\n"
+     "                                        </local:AutoScrollPanel>\r\n\r\n                                        "},
 };
 
 // The panel's rows come from the same table the native properties are made

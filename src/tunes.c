@@ -62,66 +62,77 @@ enum { S_HORSEPOWER, S_LOW_END, S_TOP_END, S_BOOST, S_REDLINE, S_TOP_SPEED, S_WE
        S_GRIP_FRONT, S_GRIP_REAR, S_DRAG, S_DOWNFORCE_FRONT, S_DOWNFORCE_REAR, S_MW, SLIDERS };
 #define FIXED 1e9  // stock values are read as integers in units of 1e-9 (the frame only reads int64)
 
-// Help text says where each change lands; shared rows are called out.
+// Help text (shown in the Tuning screen's Description box): what the slider does to the car, and
+// what's shared with other cars.
 const SliderSpec tune_sliders[] = {
     {"LiveTuneHorsepower", "ENGINE", "Horsepower",
-     "Scales engine torque at every rpm, so horsepower changes by the same factor. Low-end and Top-end torque "
-     "multiply on top. The marker shows stock. Applies when the car is rebuilt: leave Tuning, or Get in Car.",
+     "Engine power. Multiplies the engine's torque at every rpm, so horsepower changes by the same amount: x1.50 is "
+     "50% more. More power accelerates harder and reaches a higher top speed, but spins the tires more easily. Low-end "
+     "and Top-end torque multiply on top of it. The small marker shows stock. Takes effect when you leave Tuning (or "
+     "use Get in Car).",
      0.5f, 20.0f, 0.05f, 0.1f, 1.0f, 1.0f},
     {"LiveTuneLowEndTorque", "ENGINE", "Low-end torque",
-     "Scales torque low in the rev range (full effect up to about a third of the redline, fading out by two "
-     "thirds), for pull out of corners and off the line. Multiplies with Horsepower and Top-end torque. "
-     "Changes the stock engine's torque curves (rarely shared; the log names any other car using that engine).",
+     "Pull at low revs (the bottom third of the rev range, fading out by two thirds). Raise it for harder launches "
+     "and quicker exits from slow corners; too much only spins the tires. Multiplies with Horsepower. It changes the "
+     "stock engine's torque curve, which another car very rarely shares (the log names it if so).",
      0.5f, 2.0f, 0.05f, 0.05f, 0.25f, 1.0f},
     {"LiveTuneTopEndTorque", "ENGINE", "Top-end torque",
-     "Scales torque high in the rev range (from about two thirds of the redline up), for top-end pull and peak "
-     "horsepower. Multiplies with Horsepower and Low-end torque. Changes the stock engine's torque curves "
-     "(rarely shared; the log names any other car using that engine).",
+     "Pull at high revs (the top third of the rev range), where peak horsepower is. Raise it for stronger "
+     "acceleration at speed and a higher top speed. Multiplies with Horsepower. It changes the stock engine's torque "
+     "curve, which another car very rarely shares (the log names it if so).",
      0.5f, 2.0f, 0.05f, 0.05f, 0.25f, 1.0f},
     {"LiveTuneBoost", "ENGINE", "Boost",
-     "Scales turbo or supercharger boost: x2 doubles the torque the boost adds, x0 removes it. Covers every "
-     "turbo and supercharger level for the stock engine. Naturally aspirated cars only change once a turbo or "
-     "supercharger is fitted. Shared by every car with the same stock engine.",
+     "How hard the turbo or supercharger pushes: x2 doubles the extra power the boost adds, x0 takes it away. Does "
+     "nothing on a naturally aspirated engine until you fit a turbo or supercharger in Upgrades. Every car with the "
+     "same stock engine shares this.",
      0.0f, 3.0f, 0.05f, 0.05f, 0.25f, 1.0f},
     {"LiveTuneRedline", "ENGINE", "Rev limit",
-     "Scales the redline (and the torque curve's top end when needed). Shared by every car with the same stock engine.",
+     "How high the engine revs before the limiter cuts in: x1.10 is 10% higher. Each gear then goes further before "
+     "you shift, and the engine keeps making power up there. Every car with the same stock engine shares this.",
      0.5f, 2.0f, 0.01f, 0.05f, 0.25f, 1.0f},
     {"LiveTuneTopSpeed", "DRIVETRAIN", "Top speed",
-     "Lengthens (higher) or shortens (lower) the final drive of every transmission level of the stock drivetrain. "
-     "Longer gearing raises top speed if the engine can pull it, but accelerates slower. A race transmission's own "
-     "Final Drive setting may override it. Rarely shared; the log names any other car using that drivetrain.",
+     "Gearing. Higher makes every gear longer: a higher top speed if the engine has the power to get there, but "
+     "slower acceleration. Lower makes every gear shorter: quicker acceleration, lower top speed. A race "
+     "transmission's own Final Drive setting can override this.",
      0.7f, 1.5f, 0.01f, 0.01f, 0.05f, 1.0f},
     {"LiveTuneWeight", "CHASSIS", "Weight",
-     "Scales the car's mass for every weight-reduction level of this car. Lighter accelerates, brakes and turns "
-     "quicker; heavier is more planted.",
+     "How heavy the car is: x0.90 is 10% lighter. Lighter accelerates, brakes and turns quicker; heavier feels more "
+     "planted and stable.",
      0.5f, 1.5f, 0.01f, 0.01f, 0.05f, 1.0f},
     {"LiveTuneSteering", "CHASSIS", "Steering lock",
-     "Scales the maximum steering angle (wheel and controller) of this car. Higher turns tighter at low speed.",
+     "How far the front wheels can turn. Higher turns the car tighter and quicker at low speed (hairpins, U-turns, "
+     "drifts), but can feel twitchy. Lower makes the steering calmer and more stable, but the car turns wider. Works "
+     "the same on a wheel, a controller or the keyboard.",
      0.7f, 1.3f, 0.01f, 0.01f, 0.05f, 1.0f},
     {"LiveTuneBrakes", "BRAKES", "Brake force",
-     "Scales braking friction for every brake upgrade level of this car.",
+     "How hard the brakes bite: higher stops in a shorter distance, but locks the wheels more easily when you brake "
+     "hard. Lower is gentler and easier to control.",
      0.25f, 4.0f, 0.05f, 0.05f, 0.25f, 1.0f},
     {"LiveTuneGripFront", "GRIP", "Front",
-     "Scales front tire friction, cornering and braking, for every chassis upgrade level of this car.",
+     "Front tire grip, for turning in and braking. More front grip than rear turns in sharper and can make the back "
+     "slide out (oversteer); less makes the car push wide in corners (understeer).",
      0.25f, 4.0f, 0.05f, 0.05f, 0.25f, 1.0f},
     {"LiveTuneGripRear", "GRIP", "Rear",
-     "Scales rear tire friction, cornering and traction, for every chassis upgrade level of this car.",
+     "Rear tire grip, for cornering and putting the power down. More keeps the back stable and cuts wheelspin; less "
+     "lets the back slide out more easily (good for drifting).",
      0.25f, 4.0f, 0.05f, 0.05f, 0.25f, 1.0f},
     {"LiveTuneDrag", "AERO", "Drag",
-     "Scales aerodynamic drag. Lower is faster on the straights.",
+     "Air resistance. Lower is faster on the straights and raises top speed; higher slows the car at speed.",
      0.25f, 4.0f, 0.05f, 0.05f, 0.25f, 1.0f},
     {"LiveTuneDownforceFront", "AERO", "Front downforce",
-     "Scales the body's front downforce. Cars with no stock downforce are unaffected.",
+     "Aero grip at the front: presses the front tires down at speed, for more grip in fast corners, at the cost of a "
+     "little top speed. Does nothing on a car with no downforce of its own.",
      0.25f, 4.0f, 0.05f, 0.05f, 0.25f, 1.0f},
     {"LiveTuneDownforceRear", "AERO", "Rear downforce",
-     "Scales the body's rear downforce. Cars with no stock downforce are unaffected.",
+     "Aero grip at the back: keeps the rear planted in fast corners and over crests, at the cost of a little top "
+     "speed. Does nothing on a car with no downforce of its own.",
      0.25f, 4.0f, 0.05f, 0.05f, 0.25f, 1.0f},
     {"LiveTuneMwHandling", "MW HANDLING", "MW Handling",
-     "Blends this car toward NFS Most Wanted-style handling: 0 is stock, 1 is the full preset. "
-     "More grip (slower classes gain more, up to 1.8x, rear a bit more than front), a downforce floor that also "
-     "cures rear lift, a stronger rear stability boost, less steering lock at speed, quicker steering and "
-     "countersteer, and a stronger handbrake and brakes. Only this car's rows change. The Grip, Brake force and "
-     "Downforce sliders multiply on top. Applies when the car is rebuilt: leave Tuning, or Get in Car.",
+     "A one-slider handling preset in the style of Need for Speed: Most Wanted: 0 is the car as it is, 1 is the full "
+     "preset, anything between is a blend. It adds grip (more on slower cars, up to 1.8x, a bit more at the back), "
+     "keeps the rear planted at speed, makes the steering quicker but less extreme at high speed, catches slides "
+     "faster, and makes the brakes and handbrake stronger. Only this car changes; the Grip, Brake force and Downforce "
+     "sliders still multiply on top. Takes effect when you leave Tuning (or use Get in Car).",
      0.0f, 1.0f, 0.05f, 0.05f, 0.25f, 0.0f},
 };
 const unsigned tune_slider_count = ARRAYSIZE(tune_sliders);
