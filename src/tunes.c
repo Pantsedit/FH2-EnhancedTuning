@@ -52,7 +52,7 @@ enum {
     SQLITE_ROW = 100, SQLITE_DONE = 101,
     MAX_TUNES = 64,     // cars with a tune this session
     MAX_EDITS = 12,     // columns one slider changes
-    MAX_ROWS = 8,       // rows one column edit may touch (upgrade levels)
+    MAX_ROWS = 16,      // rows one column edit may touch (upgrade levels, and parts mods add)
     MAX_STOCK = 8192,   // remembered stock values
     MAX_CURVES = 256,   // remembered stock torque curves (rows of List_TorqueCurve)
     CURVE_CELLS = 246,  // List_TorqueCurve v0..v245
